@@ -2,4 +2,4 @@
 /scrapy
 /scraper_db_gold_price/.idea
 123.txt
-/gold_data_base/scraper_db_gold_price/soup_scraper/data_gold.csv
+"/gold_data_base/scraper_db_gold_price/soup_scraper/data_gold.csv"
