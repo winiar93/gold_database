@@ -21,7 +21,7 @@ def get_gold_price_from_web():
 def get_gold_price_all_time():
     while True:
         print(get_gold_price_from_web())
-        time.sleep(4)
+
 
 
 if __name__ == '__main__':
