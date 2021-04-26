@@ -15,7 +15,8 @@ def get_gold_price_from_web():
     soup = bs4.BeautifulSoup(r.text, 'xml')
     now = datetime.now()
     price = soup.find('div', {'class': 'live_metal_prices_li_in'}).find('span').text
-    return {now.strftime("%m/%d/%Y, %H:%M:%S"): ast.literal_eval((price.replace('zł', '')).replace(",", "."))}
+    data_package = [now.strftime("%m/%d/%Y %H:%M:%S"), ast.literal_eval((price.replace('zł', '')).replace(",", "."))]
+    return data_package
 
 
 def get_gold_price_all_time():
@@ -23,10 +24,7 @@ def get_gold_price_all_time():
         print(get_gold_price_from_web())
 
 
+# if __name__ == '__main__':
+#     get_gold_price_all_time()
 
-if __name__ == '__main__':
-    get_gold_price_from_web()
-    get_gold_price_all_time()
-
-
-print(get_gold_price_from_web())
+print(get_gold_price_from_web()[1])
