@@ -11,8 +11,8 @@ def create_new_database():
 
 class DataBaseSqlOperations():
 
-    def __init__(self, connection=sqlite3.connect('gold.db')):
-        self.connection = connection
+    def __init__(self):
+        self.connection = sqlite3.connect('gold.db')
 
 
     def add_table(self):
@@ -58,8 +58,8 @@ x = 'SELECT * FROM gold_price'
 
 class ReadDataFromDatabase:
 
-    def __init__(self, connection=sqlite3.connect('gold.db')):
-        self.connection = connection
+    def __init__(self):
+        self.connection = sqlite3.connect('gold.db')
 
     def select_operation(self):
         c = self.connection.cursor()
@@ -78,8 +78,8 @@ class ReadDataFromDatabase:
 
 
 
-'''database_sql = DataBaseSqlOperations()
-database_sql.insert_into_table("27/04/2021 11:28", "1719")'''
+database_sql = DataBaseSqlOperations()
+database_sql.insert_into_table("27/04/2021 11:45", "2000")
 
 need_more_information = ReadDataFromDatabase()
 need_more_information.read_any_information()

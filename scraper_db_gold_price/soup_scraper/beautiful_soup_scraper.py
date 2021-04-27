@@ -8,6 +8,9 @@ import matplotlib.pyplot as plt
 import csv
 import re
 import ast
+import argparse, optparse
+import sys
+from optparse import OptionParser
 
 
 def get_gold_price_from_web():
@@ -21,10 +24,24 @@ def get_gold_price_from_web():
 
 def get_gold_price_all_time():
     while True:
+        time.sleep(4)
         print(get_gold_price_from_web())
 
 
-# if __name__ == '__main__':
-#     get_gold_price_all_time()
 
-print(get_gold_price_from_web()[1])
+from optparse import OptionParser
+
+if __name__ == '__main__':
+    parser = OptionParser()
+    parser.add_option("-r", "--read", dest="read_data", action="store_true")
+    parser.add_option("-l", "--loop", dest="read_loop", action="store_true")
+
+
+    options, args = parser.parse_args()
+
+    if options.read_data:
+        print(get_gold_price_from_web())
+    if options.read_loop:
+        while True:
+            print(get_gold_price_from_web())
+            time.sleep(2)
