@@ -4,53 +4,59 @@ from datetime import datetime
 from scraper_db_gold_price.soup_scraper.beautiful_soup_scraper import get_gold_price_from_web
 
 
-def connect_to_database():
+def create_new_database():
     '''IF there is no database, sqlite create new one'''
-    connection = sqlite3.connect('gold.db')
+    return sqlite3.connect('gold.db')
 
 
-def add_table():
-    connection = sqlite3.connect('gold.db')
-    c = connection.cursor()
-    c.execute("""CREATE TABLE gold_price (
-                ID INTEGER PRIMARY KEY AUTOINCREMENT,
-                date varchar(255) NOT NULL,
-                price int
-                )""")
-    connection.commit()
-    connection.close()
+class DataBaseSqlOperations():
+
+    def __init__(self, connection=sqlite3.connect('gold.db')):
+        self.connection = connection
 
 
-def insert_into_table():
-    connection = sqlite3.connect('gold.db')
-    c = connection.cursor()
-    c.execute("INSERT INTO gold_price VALUES (NULL,'tooday',56308888)")
-    connection.commit()
-    connection.close()
-
-
-def dynamic_data_insert():
-    while True:
+    def add_table(self):
         connection = sqlite3.connect('gold.db')
         c = connection.cursor()
-        now = datetime.now()
-        now.strftime("%m/%d/%Y, %H:%M:%S")
-        take_date = str(now.strftime("%m/%d/%Y %H:%M:%S"))
-        value = 2000
-        # get_gold_price_from_web()[1]
-        c.execute("insert into gold_price (ID, date, price) values (NULL, ?, ?)",
-                  (get_gold_price_from_web()[0], get_gold_price_from_web()[1]))
-
+        c.execute("""CREATE TABLE gold_price (
+                    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                    date varchar(255) NOT NULL,
+                    price int
+                    )""")
         connection.commit()
-        c.execute("SELECT * FROM gold_price ORDER BY ID DESC LIMIT 1")
-        result = c.fetchone()
-        print("Added values to gold_price table : ", str(result))
         connection.close()
-        time.sleep(3)
+
+    def insert_into_table(self,date,value_pln):
+        c = self.connection.cursor()
+        #insert_command =
+        c.execute("INSERT INTO gold_price VALUES (NULL,?,?)", (str(date), str(value_pln)))
+        self.connection.commit()
+        self.connection.close()
+
+    def dynamic_data_insert(self,interval):
+        while True:
+
+            c = self.connection.cursor()
+            now = datetime.now()
+            now.strftime("%m/%d/%Y, %H:%M:%S")
+            take_date = str(now.strftime("%m/%d/%Y %H:%M:%S"))
+            value = 2000
+            # get_gold_price_from_web()[1]
+            c.execute("insert into gold_price (ID, date, price) values (NULL, ?, ?)",
+                      (get_gold_price_from_web()[0], get_gold_price_from_web()[1]))
+
+            self.connection.commit()
+            c.execute("SELECT * FROM gold_price ORDER BY ID DESC LIMIT 1")
+            result = c.fetchone()
+            print("Added values to gold_price table : ", str(result))
+            self.connection.close()
+            time.sleep(interval)
+
 
 x = 'SELECT * FROM gold_price'
 
-class Read_data_from_db:
+
+class ReadDataFromDatabase:
 
     def __init__(self, connection=sqlite3.connect('gold.db')):
         self.connection = connection
@@ -70,12 +76,11 @@ class Read_data_from_db:
         self.connection.commit()
         self.connection.close()
 
-# if __name__ == '__main__':
-# select_operation()
-# connect_to_database()
-# add_table()
-# insert_into_table()
-grab_data_from_db = Read_data_from_db()
 
-#grab_data_from_db.select_operation()
-grab_data_from_db.read_any_information()
+
+'''database_sql = DataBaseSqlOperations()
+database_sql.insert_into_table("27/04/2021 11:28", "1719")'''
+
+need_more_information = ReadDataFromDatabase()
+need_more_information.read_any_information()
+#select * from gold_price order by ID desc limit 1
