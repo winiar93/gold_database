@@ -4,3 +4,5 @@
 123.txt
 *.csv
 *.db
+scraper_db_gold_price/soup_scraper/__pycache__
+scraper_db_gold_price/sql_data_base/__pycache__
