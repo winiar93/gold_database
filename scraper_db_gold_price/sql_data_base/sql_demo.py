@@ -3,30 +3,36 @@ import time
 from datetime import datetime
 from scraper_db_gold_price.soup_scraper.beautiful_soup_scraper import get_gold_price_from_web
 
+#Stworzyć jedna klase dla wszytkichg operacti -- Class DataBaseController
+# w inicie sprawdzic czy jest tabel z gold price zrobic z ifem jest tak to nic nie robic jesli FALSE to tworzy
 
-def create_new_database():
-    '''IF there is no database, sqlite create new one'''
-    return sqlite3.connect('gold.db')
+#x = 'SELECT * FROM gold_price'
 
 
-class DataBaseSqlOperations():
+class DataBaseController():
+
+    GOLD_PRICE_TABLE_NAME = "gold_price"
+    DATA_BASE_NAME = "gold.db"
+
 
     def __init__(self):
-        self.connection = sqlite3.connect('gold.db')
+        self.connection = sqlite3.connect(self.DATA_BASE_NAME)
+        #if
+        self._create_gold_price_table()
 
 
-    def add_table(self):
+    def _create_gold_price_table(self):
         connection = sqlite3.connect('gold.db')
         c = connection.cursor()
-        c.execute("""CREATE TABLE gold_price (
+        c.execute(f"""CREATE TABLE {self.GOLD_PRICE_TABLE_NAME} (
                     ID INTEGER PRIMARY KEY AUTOINCREMENT,
                     date varchar(255) NOT NULL,
-                    price int
+                    price DECIMAL
                     )""")
         connection.commit()
         connection.close()
 
-    def insert_into_table(self,date,value_pln):
+    def insert_into_table(self, date, value_pln):
         c = self.connection.cursor()
         #insert_command =
         c.execute("INSERT INTO gold_price VALUES (NULL,?,?)", (str(date), str(value_pln)))
@@ -53,13 +59,6 @@ class DataBaseSqlOperations():
             time.sleep(interval)
 
 
-x = 'SELECT * FROM gold_price'
-
-
-class ReadDataFromDatabase:
-
-    def __init__(self):
-        self.connection = sqlite3.connect('gold.db')
 
     def select_operation(self):
         c = self.connection.cursor()
@@ -79,7 +78,7 @@ class ReadDataFromDatabase:
 
 
 database_sql = DataBaseSqlOperations()
-database_sql.insert_into_table("27/04/2021 11:45", "2000")
+#database_sql.insert_into_table("27/04/2021 11:45", "2000")
 
 need_more_information = ReadDataFromDatabase()
 need_more_information.read_any_information()
