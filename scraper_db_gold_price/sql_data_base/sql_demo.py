@@ -1,51 +1,68 @@
 import sqlite3
 import time
-from datetime import datetime
+from datetime import date, datetime
 from scraper_db_gold_price.soup_scraper.beautiful_soup_scraper import get_gold_price_from_web
+import os.path
 
-#Stworzyć jedna klase dla wszytkichg operacti -- Class DataBaseController
-# w inicie sprawdzic czy jest tabel z gold price zrobic z ifem jest tak to nic nie robic jesli FALSE to tworzy
+today = date.today()
+print(today)
+'''
+x = 'SELECT * FROM gold_price'
 
-#x = 'SELECT * FROM gold_price'
+'''
 
 
 class DataBaseController():
-
     GOLD_PRICE_TABLE_NAME = "gold_price"
     DATA_BASE_NAME = "gold.db"
-
+    DATA_BASE_FILE = "scraper_db_gold_price\sql_data_base\gold.db"
+    QUERY_CHECK = f"PRAGMA table_info({GOLD_PRICE_TABLE_NAME})"
 
     def __init__(self):
-        self.connection = sqlite3.connect(self.DATA_BASE_NAME)
-        #if
-        self._create_gold_price_table()
+        try:
+            self.connection = sqlite3.connect(self.DATA_BASE_NAME)
+            c = self.connection.cursor()
+        except sqlite3.OperationalError:
+            pass
 
+        c.execute(self.QUERY_CHECK)
 
-    def _create_gold_price_table(self):
-        connection = sqlite3.connect('gold.db')
-        c = connection.cursor()
-        c.execute(f"""CREATE TABLE {self.GOLD_PRICE_TABLE_NAME} (
-                    ID INTEGER PRIMARY KEY AUTOINCREMENT,
-                    date varchar(255) NOT NULL,
-                    price DECIMAL
-                    )""")
-        connection.commit()
-        connection.close()
+        if len(c.fetchall()) == 0:
+            print("Data base is empty")
+            self.connection = sqlite3.connect(self.DATA_BASE_NAME)
+            c = self.connection.cursor()
+            c.execute(f"""CREATE TABLE {self.GOLD_PRICE_TABLE_NAME} (
+                                    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                                    time timestamp ,
+                                    price REAL
+                                    )""")
+            print("Table was created")
+            self.connection.commit()
+            # self.connection.close()
 
-    def insert_into_table(self, date, value_pln):
+    # def _create_gold_price_table(self):
+    #     connection = sqlite3.connect('gold.db')
+    #     c = connection.cursor()
+    #     c.execute(f"""CREATE TABLE {self.GOLD_PRICE_TABLE_NAME} (
+    #                 ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    #                 date varchar(255) NOT NULL,
+    #                 price INT
+    #                 )""")
+    #     connection.commit()
+    #     connection.close()
+
+    def _insert_into_table_(self, value_pln):
         c = self.connection.cursor()
-        #insert_command =
-        c.execute("INSERT INTO gold_price VALUES (NULL,?,?)", (str(date), str(value_pln)))
+        c.execute("INSERT INTO 'gold_price' VALUES (NULL,?,?)", (today,value_pln))
         self.connection.commit()
         self.connection.close()
 
-    def dynamic_data_insert(self,interval):
+    def dynamic_data_insert(self, interval):
         while True:
-
             c = self.connection.cursor()
             now = datetime.now()
             now.strftime("%m/%d/%Y, %H:%M:%S")
-            take_date = str(now.strftime("%m/%d/%Y %H:%M:%S"))
+            take_date = str(now.strftime("%m/%d/%Y"))
             value = 2000
             # get_gold_price_from_web()[1]
             c.execute("insert into gold_price (ID, date, price) values (NULL, ?, ?)",
@@ -58,8 +75,6 @@ class DataBaseController():
             self.connection.close()
             time.sleep(interval)
 
-
-
     def select_operation(self):
         c = self.connection.cursor()
         c.execute("SELECT * FROM gold_price")
@@ -67,7 +82,7 @@ class DataBaseController():
         self.connection.commit()
         self.connection.close()
 
-    def read_any_information(self):
+    def type_sql_query(self):
         c = self.connection.cursor()
         sql_select = input("Type sql operation : ")
         c.execute(sql_select)
@@ -76,10 +91,6 @@ class DataBaseController():
         self.connection.close()
 
 
-
-database_sql = DataBaseSqlOperations()
-#database_sql.insert_into_table("27/04/2021 11:45", "2000")
-
-need_more_information = ReadDataFromDatabase()
-need_more_information.read_any_information()
-#select * from gold_price order by ID desc limit 1
+controlling = DataBaseController()
+#controlling._insert_into_table_(2000.9)
+controlling.type_sql_query()
