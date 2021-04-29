@@ -3,6 +3,7 @@ import time
 from datetime import date, datetime
 from scraper_db_gold_price.soup_scraper.beautiful_soup_scraper import get_gold_price_from_web
 import os.path
+import pandas as pd
 
 today = date.today()
 print(today)
@@ -60,13 +61,7 @@ class DataBaseController():
     def dynamic_data_insert(self, interval):
         while True:
             c = self.connection.cursor()
-            now = datetime.now()
-            now.strftime("%m/%d/%Y, %H:%M:%S")
-            take_date = str(now.strftime("%m/%d/%Y"))
-            value = 2000
-            # get_gold_price_from_web()[1]
-            c.execute("insert into gold_price (ID, date, price) values (NULL, ?, ?)",
-                      (get_gold_price_from_web()[0], get_gold_price_from_web()[1]))
+            c.execute("INSERT INTO 'gold_price' VALUES (NULL,?,?)", (today, get_gold_price_from_web()[1]))
 
             self.connection.commit()
             c.execute("SELECT * FROM gold_price ORDER BY ID DESC LIMIT 1")
@@ -90,7 +85,11 @@ class DataBaseController():
         self.connection.commit()
         self.connection.close()
 
+    def export_to_csv(self):
+        conn = sqlite3.connect(self.DATA_BASE_NAME)
+        database_to_dataframe = pd.read_sql_query("SELECT * FROM gold_price",conn)
+        database_to_dataframe.to_csv('gold_price_data.csv', index=False)
 
 controlling = DataBaseController()
 #controlling._insert_into_table_(2000.9)
-controlling.type_sql_query()
+controlling.export_to_csv()
