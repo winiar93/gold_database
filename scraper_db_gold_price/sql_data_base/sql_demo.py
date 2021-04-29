@@ -9,7 +9,8 @@ today = date.today()
 print(today)
 '''
 x = 'SELECT * FROM gold_price'
-
+SELECT strftime('%d', time) as day, avg(price) 
+FROM gold_price WHERE day = '26' GROUP BY day
 '''
 
 
@@ -41,16 +42,7 @@ class DataBaseController():
             self.connection.commit()
             # self.connection.close()
 
-    # def _create_gold_price_table(self):
-    #     connection = sqlite3.connect('gold.db')
-    #     c = connection.cursor()
-    #     c.execute(f"""CREATE TABLE {self.GOLD_PRICE_TABLE_NAME} (
-    #                 ID INTEGER PRIMARY KEY AUTOINCREMENT,
-    #                 date varchar(255) NOT NULL,
-    #                 price INT
-    #                 )""")
-    #     connection.commit()
-    #     connection.close()
+
 
     def _insert_into_table_(self, value_pln):
         c = self.connection.cursor()
@@ -67,10 +59,10 @@ class DataBaseController():
             c.execute("SELECT * FROM gold_price ORDER BY ID DESC LIMIT 1")
             result = c.fetchone()
             print("Added values to gold_price table : ", str(result))
-            self.connection.close()
+            #self.connection.close()
             time.sleep(interval)
 
-    def select_operation(self):
+    def select_all_operation(self):
         c = self.connection.cursor()
         c.execute("SELECT * FROM gold_price")
         print(c.fetchall())
@@ -92,4 +84,5 @@ class DataBaseController():
 
 controlling = DataBaseController()
 #controlling._insert_into_table_(2000.9)
-controlling.export_to_csv()
+#controlling.dynamic_data_insert(2)
+#controlling.select_operation()
