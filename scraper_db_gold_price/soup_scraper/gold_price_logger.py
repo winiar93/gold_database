@@ -12,7 +12,7 @@ import re
 import ast
 
 
-def start_loger():
+def start_loger(interval):
     counter = 0
 
     while True:
@@ -29,7 +29,7 @@ def start_loger():
             text_file.write(str(ast.literal_eval((price.replace('zł', '')).replace(",", "."))) + "\n")
 
         counter += 1
-        time.sleep(1)
+        time.sleep(interval)
         text_file.close()
         print({now.strftime("%m/%d/%Y, %H:%M:%S"): ast.literal_eval((price.replace('zł', '')).replace(",", "."))})
 
