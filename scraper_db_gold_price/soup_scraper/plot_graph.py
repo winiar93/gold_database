@@ -34,6 +34,4 @@ def gold_price_plot(condition):
 
 
 
-if __name__ == '__main__':
-    gold_price_plot("max")
 
