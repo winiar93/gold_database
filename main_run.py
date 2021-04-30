@@ -6,6 +6,7 @@ from scraper_db_gold_price.sql_data_base.sql_demo import DataBaseController
 import scraper_db_gold_price.soup_scraper.gold_price_logger
 from scraper_db_gold_price.soup_scraper.gold_price_logger import start_loger
 from scraper_db_gold_price.soup_scraper.plot_graph import gold_price_plot
+
 if __name__ == '__main__':
     controlling = DataBaseController()
 

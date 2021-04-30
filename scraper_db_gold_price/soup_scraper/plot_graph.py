@@ -1,16 +1,18 @@
 import matplotlib.pyplot as plt
 import os.path
+from os import path
 import csv
 import pandas as pd
 
 def gold_price_plot(condition):
 
-    if os.path.isfile('gold_price_data.csv'):
-        print("File exist")
-    else:
+    try:
+        f = open('gold_price_data.csv')
+        f.close()
+
+    except FileNotFoundError:
         print("File not exist")
-    print("number of lines in file :")
-    print(sum(1 for line in open('gold_price_data.csv')))
+
 
     x = []
     y = []
