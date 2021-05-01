@@ -25,7 +25,7 @@ class DataBaseController():
             self.connection = sqlite3.connect(self.DATA_BASE_NAME)
             c = self.connection.cursor()
         except sqlite3.OperationalError:
-            pass
+            print('No data base found')
 
         c.execute(self.QUERY_CHECK)
 
