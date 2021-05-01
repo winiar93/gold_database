@@ -4,6 +4,7 @@ from os import path
 import csv
 import pandas as pd
 
+
 def gold_price_plot(condition):
 
     try:
@@ -12,7 +13,6 @@ def gold_price_plot(condition):
 
     except FileNotFoundError:
         print("File not exist")
-
 
     x = []
     y = []

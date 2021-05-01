@@ -42,8 +42,6 @@ class DataBaseController():
             self.connection.commit()
             # self.connection.close()
 
-
-
     def _insert_into_table_(self, value_pln):
         c = self.connection.cursor()
         c.execute("INSERT INTO 'gold_price' VALUES (NULL,?,?)", (today,value_pln))
