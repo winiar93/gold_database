@@ -26,21 +26,25 @@ class DataBaseController():
             c = self.connection.cursor()
         except sqlite3.OperationalError:
             print('No data base found')
+        try:
+            print("test check")
+            c.execute(self.QUERY_CHECK)
+            print("test ok")
+            if len(c.fetchall()) == 0:
+                print("Data base is empty")
+                self.connection = sqlite3.connect(self.DATA_BASE_NAME)
+                c = self.connection.cursor()
+                c.execute(f"""CREATE TABLE {self.GOLD_PRICE_TABLE_NAME} (
+                                        ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                                        time timestamp ,
+                                        price REAL
+                                        )""")
+                print("Table was created")
+                self.connection.commit()
 
-        c.execute(self.QUERY_CHECK)
-
-        if len(c.fetchall()) == 0:
-            print("Data base is empty")
-            self.connection = sqlite3.connect(self.DATA_BASE_NAME)
-            c = self.connection.cursor()
-            c.execute(f"""CREATE TABLE {self.GOLD_PRICE_TABLE_NAME} (
-                                    ID INTEGER PRIMARY KEY AUTOINCREMENT,
-                                    time timestamp ,
-                                    price REAL
-                                    )""")
-            print("Table was created")
-            self.connection.commit()
             # self.connection.close()
+        except sqlite3.OperationalError:
+            print('talbe not found ')
 
     def _insert_into_table_(self, value_pln):
         c = self.connection.cursor()
@@ -83,4 +87,4 @@ class DataBaseController():
 controlling = DataBaseController()
 #controlling._insert_into_table_(2000.9)
 #controlling.dynamic_data_insert(2)
-#controlling.select_operation()
+#controlling.select_all_operation()
