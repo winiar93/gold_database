@@ -7,12 +7,12 @@ Tech stack:
 * Optparser
 
 Run main_run.py in cmd or terminal with proper flag
-# How to install
+## How to install
 
 pip install git+"THIS_REPO_URL"
 
-# Check for proper requrements in your environment
-# Install them
+### Check for proper requrements in your environment
+### Install them
 pip install -r requirements.txt
 
 
