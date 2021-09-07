@@ -1,4 +1,11 @@
-# gold_data_base
-database based on bs4, sqllite
+# Self updating gold database
+Tech stack:
+* python
+* Beautifulsoup4 
+* SQlite
+* Pandas
+* Optparser
+
+Run main in cmd or terminal with proper flaf
 
 python 3.8.8
