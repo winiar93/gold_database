@@ -11,8 +11,7 @@ Run main_run.py in cmd or terminal with proper flag
 
 git clone https://github.com/winiar93/gold_database
 
-### Check for proper requrements in your environment
-### Install them
+#### Install requrements in your environment
 pip install -r requirements.txt
 
 
