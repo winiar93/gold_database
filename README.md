@@ -6,7 +6,16 @@ Tech stack:
 * Pandas
 * Optparser
 
-Run main in cmd or terminal with proper flaf
+Run main_run.py in cmd or terminal with proper flag
+# How to install
+
+pip install git+"THIS_REPO_URL"
+
+# Check for proper requrements in your environment
+# Install them
+pip install -r requirements.txt
+
+
 
 ## Flags:
 * "-r", "--read" - read gold price from web
