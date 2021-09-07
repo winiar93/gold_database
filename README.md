@@ -7,9 +7,9 @@ Tech stack:
 * Optparser
 
 Run main_run.py in cmd or terminal with proper flag
-## How to install
+### How to install
 
-pip install git+"THIS_REPO_URL"
+git clone https://github.com/winiar93/gold_database
 
 ### Check for proper requrements in your environment
 ### Install them
